@@ -9,6 +9,7 @@ status_code_counts = {
     "403": 0, "404": 0, "405": 0, "500": 0
 }
 
+
 def print_stats():
     """Prints the accumulated statistics."""
     print("File size:", total_file_size)
@@ -16,10 +17,12 @@ def print_stats():
         if status_code_counts[code] > 0:
             print(f"{code}: {status_code_counts[code]}")
 
+
 def signal_handler(sig, frame):
     """Handles the keyboard interrupt signal."""
     print_stats()
     sys.exit(0)
+
 
 # Register the signal handler for SIGINT (Ctrl + C)
 signal.signal(signal.SIGINT, signal_handler)
@@ -30,7 +33,7 @@ try:
     for line in sys.stdin:
         # Remove any leading/trailing whitespace characters
         line = line.strip()
-        
+
         # Split the line based on spaces
         parts = line.split()
         if len(parts) < 7:
@@ -47,7 +50,7 @@ try:
         except ValueError:
             continue
 
-        # Update the count for the status code if it's one of the expected codes
+        # Update the count for the status code if it's expected codes
         if status_code in status_code_counts:
             status_code_counts[status_code] += 1
 
