@@ -1,70 +1,52 @@
 #!/usr/bin/python3
-"""
-N Queens problem solved using backtracking.
-This script places N queens on an N×N chessboard without them attacking each other.
-"""
-
+""" N queens """
 import sys
 
+# Check the number of command-line arguments
+if len(sys.argv) > 2 or len(sys.argv) < 2:
+    print("Usage: nqueens N")
+    exit(1)
 
-def print_board(board):
-    """Print the board in the required output format."""
-    print([[i, col] for i, col in enumerate(board)])
+# Check if the argument is a digit
+if not sys.argv[1].isdigit():
+    print("N must be a number")
+    exit(1)
 
+# Check if the number is at least 4
+if int(sys.argv[1]) < 4:
+    print("N must be at least 4")
+    exit(1)
 
-def is_safe(board, row, col):
-    """
-    Check if placing a queen at board[row] = col is safe.
-    :param board: List of queen positions by row (index is row, value is column)
-    :param row: Current row to place queen
-    :param col: Column to place queen
-    :return: True if safe, False otherwise
-    """
-    for i in range(row):
-        # Check if there is a queen in the same column or diagonals
-        if board[i] == col or abs(board[i] - col) == abs(i - row):
-            return False
-    return True
+# Convert the input to an integer
+n = int(sys.argv[1])
 
+def queens(n, i=0, a=[], b=[], c=[]):
+    """ Find all possible positions of queens on the board """
+    if i < n:
+        for j in range(n):
+            # Check if the position is safe: not in the same column, major, or minor diagonal
+            if j not in a and i + j not in b and i - j not in c:
+                # Recursively place the next queen
+                yield from queens(n, i + 1, a + [j], b + [i + j], c + [i - j])
+    else:
+        # Yield the current valid solution
+        yield a
 
-def solve_n_queens(board, row, n):
-    """
-    Recursively solve the N Queens problem.
-    :param board: List of current queen positions
-    :param row: Current row to place the queen
-    :param n: Size of the board (N x N)
-    """
-    if row == n:
-        print_board(board)
-        return
+def solve(n):
+    """ Solve the N queens problem and print each solution """
+    # Initialize variables to store each solution
+    k = []
+    i = 0
+    # Generate and print each solution
+    for solution in queens(n, 0):
+        for s in solution:
+            # Collect the positions of the queens
+            k.append([i, s])
+            i += 1
+        print(k)
+        # Reset the position list and index for the next solution
+        k = []
+        i = 0
 
-    for col in range(n):
-        if is_safe(board, row, col):
-            board[row] = col
-            solve_n_queens(board, row + 1, n)
-            # No need to manually backtrack since the value is overwritten in the next iteration.
-
-
-def main():
-    """Main entry point of the program."""
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print("N must be a number")
-        sys.exit(1)
-
-    if n < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-
-    # Initialize the board with -1 (no queen placed)
-    board = [-1] * n
-    solve_n_queens(board, 0, n)
-
-
-if __name__ == "__main__":
-    main()
+# Start solving
+solve(n)
