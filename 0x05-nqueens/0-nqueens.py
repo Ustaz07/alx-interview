@@ -20,17 +20,19 @@ if int(sys.argv[1]) < 4:
 # Convert the input to an integer
 n = int(sys.argv[1])
 
+
 def queens(n, i=0, a=[], b=[], c=[]):
     """ Find all possible positions of queens on the board """
     if i < n:
         for j in range(n):
-            # Check if the position is safe: not in the same column, major, or minor diagonal
+            # Check if position is safe: not in the same column etc
             if j not in a and i + j not in b and i - j not in c:
                 # Recursively place the next queen
                 yield from queens(n, i + 1, a + [j], b + [i + j], c + [i - j])
     else:
         # Yield the current valid solution
         yield a
+
 
 def solve(n):
     """ Solve the N queens problem and print each solution """
@@ -47,6 +49,7 @@ def solve(n):
         # Reset the position list and index for the next solution
         k = []
         i = 0
+
 
 # Start solving
 solve(n)
