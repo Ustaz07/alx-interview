@@ -18,7 +18,7 @@ def makeChange(coins, total):
 
     # Sort coins in descending order to try the largest denominations first
     coins.sort(reverse=True)
-    
+
     coin_count = 0
     for coin in coins:
         if total == 0:
