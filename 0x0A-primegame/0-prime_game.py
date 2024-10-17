@@ -19,18 +19,18 @@ def isWinner(x, nums):
     # Check for invalid input
     if x <= 0 or not nums or x != len(nums):
         return None
-    
+
     # Initialize scores
     ben = 0
     maria = 0
-    
+
     # Get the maximum number in nums to create a prime sieve
     max_n = max(nums)
-    
+
     # Sieve of Eratosthenes to mark primes
     primes = [True] * (max_n + 1)
     primes[0], primes[1] = False, False  # 0 and 1 are not primes
-    
+
     for i in range(2, int(max_n ** 0.5) + 1):
         if primes[i]:
             for j in range(i * i, max_n + 1, i):
